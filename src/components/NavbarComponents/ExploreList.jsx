@@ -9,7 +9,7 @@ const ExploreList = () => {
         {exploreList.map((item, idx) => {
           return (
             <li key={idx}>
-              <NavLink to={item.link} end={item.link==="/"} className={({ isActive }) => isActive ? "bg-blue-500 rounded flex gap-3 px-2 text-white py-1 items-center shadow transition-all transition-duration:200ms" : "flex gap-3 py-1 px-2 items-center hover:bg-blue-200 transition-all transition-duration:200ms"}>
+              <NavLink to={item.link} end={item.link==="/"} className={({ isActive }) => isActive ? "bg-blue-500 rounded flex gap-3 px-2 text-white py-1 items-center shadow transition-all duration-200" : "flex gap-3 py-1 px-2 items-center hover:bg-blue-200 transition-all duration-200"}>
                   <item.icon />
                   {item.title}
               </NavLink>

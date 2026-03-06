@@ -19,7 +19,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      <NavLink to={"/Settings"} className={({ isActive }) => isActive ? "bg-blue-500 text-white rounded flex gap-3 px-2 py-1 items-center shadow transition-all transition-duration:200ms" : "flex gap-3 py-1 px-2 items-center hover:bg-blue-200 rounded transition-all transition-duration:200ms"}>
+      <NavLink to={"/Settings"} className={({ isActive }) => isActive ? "bg-blue-500 text-white rounded flex gap-3 px-2 py-1 items-center shadow transition-all duration-200" : "flex gap-3 py-1 px-2 items-center hover:bg-blue-200 rounded transition-all duration-200"}>
         <CiSettings size={20}/>
         Settings
       </NavLink>
