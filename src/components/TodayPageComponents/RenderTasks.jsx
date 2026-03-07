@@ -18,7 +18,7 @@ const RenderTasks = ({ tasks }) => {
                   <label htmlFor={task.id + "task"} className={`cursor-pointer ${task.complete ? "line-through" : ""}`}>{task.taskTitle}</label>
                 </div>
                 {task.tag && 
-                <span className="border rounded-md text-center px-2 bg-red-400 text-white">
+                <span className="border rounded-md text-center px-2 bg-yellow-400 border-none shadow">
                   {task.tag}
                 </span>
                 }

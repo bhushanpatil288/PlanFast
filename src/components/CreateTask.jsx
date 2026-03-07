@@ -7,7 +7,7 @@ const CreateTask = ({ isOpen, setIsOpen }) => {
     taskTitle: "", tag: ""
   })
 
-  const { tasks, setTasks, addTask } = useContext(TaskContext);
+  const { addTask, tags } = useContext(TaskContext);
 
   const handleChange = (e) =>{
     setTaskInfo({...taskInfo, [e.target.id]:e.target.value})
@@ -18,6 +18,7 @@ const CreateTask = ({ isOpen, setIsOpen }) => {
     addTask({...taskInfo, id: Date.now(), complete:false});
     // setTasks([...tasks, {...taskInfo, id: Date.now(), complete: false}])
     setIsOpen(false)
+    setTaskInfo({taskTitle: "", tag: ""})
   }
 
   return (
@@ -46,8 +47,15 @@ const CreateTask = ({ isOpen, setIsOpen }) => {
               <div className="flex gap-5 mt-10 items-center">
                 <label htmlFor="tag">Tags</label>
                 <select name="tag" id="tag" className="bg-white rounded-2xl px-5 py-2" onChange={handleChange}>
-                  <option value="">No List</option>
-                  <option value="value">test</option>
+                  <option value="">No Tag</option>
+                  {/* <option value="value">test</option> */}
+                  {tags && 
+                    tags.map((t, k)=>{
+                      return (
+                        <option key={k} value={t}>{t}</option>
+                      )
+                    })
+                  }
                 </select>
               </div>
               <div className="text-center mt-10">
