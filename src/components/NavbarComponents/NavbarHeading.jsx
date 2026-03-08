@@ -1,17 +1,18 @@
 import { BsFillPatchCheckFill } from "react-icons/bs";
-import { LuBadgeCheck } from "react-icons/lu";
 import { TbLayoutSidebarLeftCollapseFilled } from "react-icons/tb";
 
-const NavbarHeading = () => {
+const NavbarHeading = ({ isNavOpen, setIsNavOpen }) => {
   return (
-    <div className="flex justify-between items-center">
-      <div className="flex gap-2 items-center">
-        <BsFillPatchCheckFill className="text-blue-500" size={20} />
-        <p>PlanFast</p>
-      </div>
-      <div>
+    <div className={`flex ${isNavOpen ? "justify-between" : "justify-center"} items-center`}>
+      {isNavOpen &&
+        <div className="flex gap-2 items-center">
+          <BsFillPatchCheckFill className="text-blue-500" size={20} />
+          <p>PlanFast</p>
+        </div>
+      }
+      <button onClick={() => setIsNavOpen(!isNavOpen) } className="cursor-pointer">
         <TbLayoutSidebarLeftCollapseFilled className="text-blue-500" size={22} />
-      </div>
+      </button>
     </div>
   )
 }

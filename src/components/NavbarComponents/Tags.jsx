@@ -5,22 +5,24 @@ import { TaskContext } from "../../context/Tasks";
 import RenderTags from "./RenderTags";
 
 
-const Tags = () => {
+const Tags = ({ isNavOpen, setIsNavOpen }) => {
 
   const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false);
   const { tags } = useContext(TaskContext);
   return (
     <div className="flex flex-col gap-3 relative">
-      <h3>TAGS</h3>
+      <h3 className={`${isNavOpen? "":"text-center"}`}>TAGS</h3>
       {tags &&
-        <RenderTags tags={tags} />
+        <RenderTags tags={tags} isNavOpen={isNavOpen} />
       }
       <button
         onClick={() => setIsCreateTaskOpen(!isCreateTaskOpen)}
-        className="flex items-center gap-3 cursor-pointer"
+        className={`flex ${isNavOpen ? "": "justify-center"} items-center gap-3 cursor-pointer`}
       >
         <IoMdAdd />
-        <p>Add New Tag</p>
+        {isNavOpen &&
+          <p>Add New Tag</p>
+        }
       </button>
       {isCreateTaskOpen &&
         <CreateTag setIsCreateTaskOpen={setIsCreateTaskOpen} />
