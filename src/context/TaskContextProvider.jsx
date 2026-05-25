@@ -1,50 +1,99 @@
-import { createContext, useEffect, useState } from "react"
+import { createContext, useEffect, useState } from "react";
+import * as api from "../api/api";
 
 export const TaskContext = createContext(null);
 
 const TaskContextProvider = ({children}) => {
-  const [tasks, setTasks] = useState(JSON.parse(localStorage.getItem('tasks')) || [{complete:false, id: 1, tag: "High", taskTitle: "High Priority task"}, {complete:true, id: 2, tag: "Medium", taskTitle: "Medium Priority task"}, {complete: false, id:0, tag:"YouCanDeleteIt", taskTitle: "This are the sample tasks"} ]);
+  const [tasks, setTasks] = useState([]);
   const [taskToEdit, setTaskToEdit] = useState(null);
-  const [tags, setTags] = useState(JSON.parse(localStorage.getItem('tags')) || ["High", "Medium", "YouCanDeleteIt"]);
-  const [filter, setFilter] = useState([])
+  const [tags, setTags] = useState([]);
+  const [filter, setFilter] = useState([]);
 
-  useEffect(()=>{
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-    localStorage.setItem('tags', JSON.stringify(tags));
-  }, [tasks, tags])
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  const addTask=(task)=>{
-    setTasks([...tasks, task]);
-  }
+  const fetchData = async () => {
+    try {
+      const [tasksRes, tagsRes] = await Promise.all([
+        api.getTasks(),
+        api.getTags()
+      ]);
+      setTasks(tasksRes.data);
+      setTags(tagsRes.data.map(t => t.name));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
-  const toggleTaskStatus = (taskId) => {
-    let taskIndex = tasks.findIndex(task => task.id === taskId);
-    let newTasks = [...tasks];
-    newTasks[taskIndex].complete = !newTasks[taskIndex].complete;
-    setTasks(newTasks);
-  }
+  const addTask = async (task) => {
+    try {
+      const res = await api.createTask(task);
+      setTasks([...tasks, res.data]);
+    } catch (error) {
+      console.error("Error adding task:", error);
+    }
+  };
 
-  const deleteTask = (taskId) =>{
-    let taskIndex = tasks.findIndex(task=> task.id === taskId);
-    let newTasks = [...tasks];
-    newTasks.splice(taskIndex, 1);
-    setTasks(newTasks);
-  }
+  const toggleTaskStatus = async (taskId) => {
+    const task = tasks.find(t => t.id === taskId);
+    if (!task) return;
+    try {
+      const updatedTask = { ...task, complete: !task.complete };
+      const res = await api.updateTask(taskId, updatedTask);
+      setTasks(tasks.map(t => t.id === taskId ? res.data : t));
+    } catch (error) {
+      console.error("Error toggling task:", error);
+    }
+  };
 
-  const addTag = (tag) =>{
-    setTags([...tags, tag]);
-  }
+  const editTask = async (taskId, updatedData) => {
+    try {
+      const res = await api.updateTask(taskId, updatedData);
+      setTasks(tasks.map(t => t.id === taskId ? res.data : t));
+      setTaskToEdit(null);
+    } catch (error) {
+      console.error("Error editing task:", error);
+    }
+  };
 
-  const deleteTag = (tag) =>{
-    const newTags = [...tags];
-    const tagId = newTags.indexOf(tag);
-    newTags.splice(tagId, 1);
-    setTags(newTags);
-  }
+  const deleteTask = async (taskId) => {
+    try {
+      await api.removeTask(taskId);
+      setTasks(tasks.filter(t => t.id !== taskId));
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  };
+
+  const addTag = async (tag) => {
+    try {
+      const res = await api.createTag({ name: tag });
+      setTags([...tags, res.data.name]);
+    } catch (error) {
+      console.error("Error adding tag:", error);
+    }
+  };
+
+  const deleteTag = async (tag) => {
+    try {
+      const res = await api.getTags();
+      const tagObj = res.data.find(t => t.name === tag);
+      if (tagObj) {
+        await api.removeTag(tagObj.id);
+        setTags(tags.filter(t => t !== tag));
+      }
+    } catch (error) {
+      console.error("Error deleting tag:", error);
+    }
+  };
 
 
   return (
-    <TaskContext value={{tasks, setTasks, addTask, toggleTaskStatus, deleteTask, taskToEdit, setTaskToEdit, tags, addTag, deleteTag, filter, setFilter}}>
+    <TaskContext value={{
+      tasks, setTasks, addTask, toggleTaskStatus, editTask, deleteTask, 
+      taskToEdit, setTaskToEdit, tags, addTag, deleteTag, filter, setFilter
+    }}>
       {children}
     </TaskContext>
   )

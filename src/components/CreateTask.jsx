@@ -15,7 +15,7 @@ const CreateTask = ({ isOpen, setIsOpen }) => {
 
   const handleSubmit=(e)=>{
     e.preventDefault();
-    addTask({...taskInfo, id: Date.now(), complete:false});
+    addTask({...taskInfo, complete:false});
     // setTasks([...tasks, {...taskInfo, id: Date.now(), complete: false}])
     setIsOpen(false)
     setTaskInfo({taskTitle: "", tag: ""})

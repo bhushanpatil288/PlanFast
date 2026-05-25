@@ -1,0 +1,47 @@
+{
+  "tasks": [
+    {
+      "complete": true,
+      "id": "1",
+      "tag": "High",
+      "taskTitle": "High Priority task"
+    },
+    {
+      "complete": true,
+      "id": "2",
+      "tag": "Medium",
+      "taskTitle": "Medium Priority task"
+    },
+    {
+      "taskTitle": "Verify JSON Server",
+      "tag": "High",
+      "complete": false,
+      "id": "s7oKbnfIOPQ"
+    },
+    {
+      "taskTitle": "test",
+      "tag": "test",
+      "complete": false,
+      "id": "ixwrqDRpx60"
+    }
+  ],
+  "tags": [
+    {
+      "id": "1",
+      "name": "High"
+    },
+    {
+      "id": "2",
+      "name": "Medium"
+    },
+    {
+      "id": "3",
+      "name": "YouCanDeleteIt"
+    },
+    {
+      "name": "test",
+      "id": "hQMnydXkPqE"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

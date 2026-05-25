@@ -3,16 +3,11 @@ import { TaskContext } from "../context/TaskContextProvider";
 
 const CreateTask = ({ taskToEdit, setTaskToEdit }) => {
 
-  const { tags, tasks, setTasks } = useContext(TaskContext);
-
+  const { tags, editTask } = useContext(TaskContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newTasks = [...tasks];
-    const taskToEditIndex = newTasks.findIndex(task=>task.id === taskToEdit.id);
-    newTasks[taskToEditIndex] = taskToEdit;
-    setTaskToEdit(null)
-    setTasks(newTasks)
+    editTask(taskToEdit.id, taskToEdit);
   }
 
   const handleTitleChange = (e) => {
